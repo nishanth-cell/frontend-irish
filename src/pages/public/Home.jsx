@@ -13,73 +13,70 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
 
 
-  const fetchProducts = async () => {
+ const fetchProducts = async (currentPage) => {
+  try {
+    setLoading(true);
 
-    try {
+    const res = await getProducts(currentPage);
 
-      setLoading(true);
-
-      const res = await getProducts(page);
-
-      // IF NO MORE PRODUCTS
-      if (res.data.length === 0) {
-        setHasMore(false);
-        return;
-      }
-
-      // APPEND PRODUCTS
-      setProducts((prev) => [
-        ...prev,
-        ...res.data,
-      ]);
-
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+    if (res.data.length === 0) {
+      setHasMore(false);
+      return;
     }
-  };
 
-  // PAGE CHANGE
+    setProducts(res.data);
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
+useEffect(() => {
+  setProducts([]);
+  fetchProducts(page);
+}, [page]);
+
   useEffect(() => {
-    fetchProducts();
-  }, [page]);
+  let timeout;
 
-  // INFINITE SCROLL
-  useEffect(() => {
+  const handleScroll = () => {
+    clearTimeout(timeout);
 
-    const handleScroll = () => {
+    timeout = setTimeout(() => {
+      const scrollTop = document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
 
+      // NEXT PAGE
       if (
-        window.innerHeight +
-          document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight &&
+        scrollTop + windowHeight >= scrollHeight - 50 &&
         !loading &&
         hasMore
       ) {
-
         setPage((prev) => prev + 1);
-
       }
-    };
 
-    window.addEventListener(
-      "scroll",
-      handleScroll
-    );
+      // PREVIOUS PAGE
+      if (
+        scrollTop <= 100 &&
+        !loading &&
+        page > 1
+      ) {
+        setPage((prev) => prev - 1);
+      }
+    }, 150);
+  };
 
-    return () =>
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
+  window.addEventListener("scroll", handleScroll);
 
-  }, [loading, hasMore]);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [loading, hasMore, page]);
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-gray-100 dark:bg-gray-950 min-h-screen transition-all duration-300">
 
-      {/* PRODUCTS */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
 
         {products.map((p) => (
@@ -99,7 +96,7 @@ export default function Home() {
 
       {/* NO MORE PRODUCTS */}
       {!hasMore && (
-        <p className="text-center mt-6 text-gray-500">
+       <p className="text-center mt-6 text-gray-600 dark:text-gray-400">
           No more products
         </p>
       )}

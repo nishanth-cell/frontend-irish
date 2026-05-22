@@ -4,9 +4,12 @@ import { useState } from "react";
 import { logout } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 import {useNavigate} from "react-router-dom";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 // import { clearCart } from "../redux/cartSlice";
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const cartCount = cartItems.length;
@@ -17,7 +20,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white px-4 py-3 shadow-md">
+   <nav className="bg-white text-black dark:bg-gray-900 dark:text-white px-4 py-3 shadow-md transition-all duration-300">
       
       {/* TOP BAR */}
       <div className="flex items-center justify-between">
@@ -38,16 +41,16 @@ export default function Navbar() {
         {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-6">
           
-          <Link className="hover:text-yellow-400" to="/">
+          <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/">
             Home
           </Link>
 
           {!user && (
             <>
-              <Link className="hover:text-yellow-400" to="/login">
+              <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/login">
                 Login
               </Link>
-              <Link className="hover:text-yellow-400" to="/register">
+              <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/register">
                 Register
               </Link>
             </>
@@ -56,7 +59,7 @@ export default function Navbar() {
           {/* USER */}
           {role === "user" && (
            <Link
-  className="hover:text-yellow-400 relative"
+  className="hover:text-blue-500 dark:hover:text-yellow-400 relative"
   to="/cart"
 >
   Cart
@@ -72,29 +75,39 @@ export default function Navbar() {
           {/* ADMIN */}
           {role === "admin" && (
             <>
-              {/* <Link className="hover:text-yellow-400" to="/admin/dashboard">
+              {/* <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/admin/dashboard">
                 Dashboard
               </Link> */}
-              <Link className="hover:text-yellow-400" to="/admin/products">
+              <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/admin/products">
                 Products
               </Link>
-              <Link className="hover:text-yellow-400" to="/admin/products/add">
+              <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/admin/products/add">
                 Add Product
               </Link>
-              <Link className="hover:text-yellow-400" to="/admin/users">
+              <Link className="hover:text-blue-500 dark:hover:text-yellow-400" to="/admin/users">
                 Users
               </Link>
             </>
           )}
 
           
-          {user && (
+         
   <div className="flex items-center gap-4">
-
+ {user && (
     <p className="text-yellow-400 font-semibold">
       Hi, {user.name}
     </p>
-
+ )}
+    <button
+  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+  className="p-2 rounded-full 
+             bg-gray-200 text-black 
+             dark:bg-gray-700 dark:text-white 
+             hover:scale-110 transition-all duration-300"
+>
+  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+</button>
+ {user && (
     <button
       onClick={() => {
         dispatch(logout());
@@ -105,15 +118,15 @@ export default function Navbar() {
     >
       Logout
     </button>
-
+ )}
   </div>
-)}
+
         </div>
       </div>
 
       {/* MOBILE MENU */}
       {open && (
-        <div className="md:hidden mt-3 flex flex-col gap-3 bg-gray-800 p-3 rounded-lg">
+        <div className="md:hidden mt-3 flex flex-col gap-3 bg-white text-black dark:bg-gray-800 dark:text-white p-3 rounded-lg transition-all duration-300">
           
           <Link onClick={() => setOpen(false)} to="/">
             Home
@@ -161,13 +174,24 @@ export default function Navbar() {
             </>
           )}
 
-         {user && (
+        
   <div className="flex flex-col gap-2">
-
+ {user && (
     <p className="text-yellow-400 font-semibold">
       Hi, {user.name}
     </p>
+ )}
 
+    <button
+  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+  className="px-4 py-2 rounded-full flex items-center gap-2 
+             bg-gray-200 text-black 
+             dark:bg-gray-700 dark:text-white 
+             hover:scale-105 transition-all duration-300"
+>
+  {theme === "dark" ? "Light Mode ☀️" : "Dark Mode 🌙"}
+</button>
+{user&&(
     <button
       onClick={() => {
         dispatch(logout());
@@ -180,9 +204,10 @@ export default function Navbar() {
     >
       Logout
     </button>
+    )}
 
   </div>
-)}
+
         </div>
       )}
     </nav>

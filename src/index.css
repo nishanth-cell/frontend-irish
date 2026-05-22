@@ -60,4 +60,7 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
+body {
+  @apply bg-white text-black dark:bg-gray-950 dark:text-white;
+}
 }

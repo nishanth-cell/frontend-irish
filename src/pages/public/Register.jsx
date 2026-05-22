@@ -10,7 +10,7 @@ const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
-  role: z.enum(["admin", "user"]),
+ // role: z.enum(["admin", "user"]),
 });
 
 export default function Register() {
@@ -35,30 +35,29 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-[400px] p-6 bg-white shadow-lg rounded-xl">
+   <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950 transition-all duration-300">
+     <div className="w-[400px] p-6 bg-white dark:bg-gray-900 shadow-lg rounded-xl transition-all duration-300">
 
-        <h2 className="text-2xl font-bold text-center mb-5">
-          Register
-        </h2>
+       <h2 className="text-2xl font-bold text-center mb-5 text-black dark:text-white">
+  Register
+</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
-          <Input placeholder="Name" {...register("name")} />
+          <Input placeholder="Name" className="dark:bg-gray-800 dark:text-white" {...register("name")} />
           <p className="text-red-500">{errors.name?.message}</p>
 
-          <Input placeholder="Email" {...register("email")} />
+          <Input placeholder="Email"  className="dark:bg-gray-800 dark:text-white" {...register("email")} />
           <p className="text-red-500">{errors.email?.message}</p>
 
-          <Input type="password" placeholder="Password" {...register("password")} />
-          <p className="text-red-500">{errors.password?.message}</p>
+          <Input type="password" placeholder="Password" className="dark:bg-gray-800 dark:text-white" {...register("password")} />
+          <p className="text-red-500 text-sm">{errors.password?.message}</p>
 
-          <select {...register("role")} className="w-full border p-2 rounded">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+         
 
-          <Button className="w-full">Register</Button>
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+  Register
+</Button>
 
         </form>
       </div>

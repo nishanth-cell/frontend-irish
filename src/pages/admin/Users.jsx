@@ -29,22 +29,30 @@ export default function Users() {
   }, []);
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-gray-50 dark:bg-gray-950 min-h-screen transition-all duration-300">
 
-      <h1 className="text-2xl font-bold mb-5">
-        Registered Users
-      </h1>
+      <h1 className="text-2xl font-bold mb-5 text-black dark:text-white">
+  Registered Users
+</h1>
 
       <div className="overflow-x-auto">
 
-        <table className="w-full border">
+        <table className="w-full border border-gray-200 dark:border-gray-800">
 
-          <thead className="bg-gray-200">
+         <thead className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
 
             <tr>
-              <th className="p-3 border">Name</th>
-              <th className="p-3 border">Email</th>
-              <th className="p-3 border">Role</th>
+             <th className="p-3 border border-gray-300 dark:border-gray-700">
+  Name
+</th>
+
+<th className="p-3 border border-gray-300 dark:border-gray-700">
+  Email
+</th>
+
+<th className="p-3 border border-gray-300 dark:border-gray-700">
+  Role
+</th>
             </tr>
 
           </thead>
@@ -52,19 +60,19 @@ export default function Users() {
           <tbody>
 
             {users.map((user) => (
-              <tr key={user._id}>
+              <tr key={user._id} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition">
 
-                <td className="p-3 border">
-                  {user.name}
-                </td>
+               <td className="p-3 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
+  {user.name}
+</td>
 
-                <td className="p-3 border">
-                  {user.email}
-                </td>
+<td className="p-3 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
+  {user.email}
+</td>
 
-                <td className="p-3 border">
-                  {user.role}
-                </td>
+<td className="p-3 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
+  {user.role}
+</td>
 
               </tr>
             ))}

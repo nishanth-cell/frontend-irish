@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({
+  deletingId ,
   product,
 
   isAdmin = false,
@@ -108,7 +109,7 @@ export default function ProductCard({
   };
 
   return (
-    <div className="bg-white border rounded-2xl shadow-sm hover:shadow-lg transition p-4 flex flex-col">
+   <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 flex flex-col text-black dark:text-white">
 
       {/* IMAGE */}
       <img
@@ -122,30 +123,29 @@ export default function ProductCard({
       {/* CONTENT */}
       <div className="mt-4 text-center space-y-2 flex-1">
 
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-bold text-black dark:text-white">
           {product.title}
         </h2>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           {product.description}
         </p>
 
-        <p className="font-bold text-green-600">
+       <p className="font-bold text-green-600">
           ₹ {product.rate}
         </p>
 
-        <p className="text-sm text-gray-500">
-          Discount: {product.discount}%
-        </p>
+       <p className="text-sm text-gray-500 dark:text-gray-400">
+  Discount: {product.discount}%
+</p>
 
-        <p className="text-sm text-gray-500">
-          Stock: {product.stock}
-        </p>
+<p className="text-sm text-gray-500 dark:text-gray-400">
+  Stock: {product.stock}
+</p>
 
-        <p className="text-xs text-gray-400">
-          {product.clothType}
-        </p>
-
+<p className="text-xs text-gray-400 dark:text-gray-500">
+  {product.clothType}
+</p>
       </div>
 
       {/* ADMIN BUTTONS */}
@@ -154,20 +154,22 @@ export default function ProductCard({
         <div className="grid grid-cols-2 gap-3 mt-4">
 
           <Button
-            className="bg-yellow-500 hover:bg-yellow-600"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white"
             onClick={() => onEdit(product)}
           >
             Edit
           </Button>
 
+        
+
           <Button
-            className="bg-red-500 hover:bg-red-600"
-            onClick={() =>
-              onDelete(product._id)
-            }
-          >
-            Delete
-          </Button>
+  className="bg-red-500 hover:bg-red-600 text-white"
+  onClick={() => onDelete(product._id)}
+  disabled={deletingId === product._id}
+>
+  {deletingId === product._id ? "Deleting..." : "Delete"}
+</Button>
+          
 
         </div>
 
@@ -179,7 +181,7 @@ export default function ProductCard({
           {!cartItem ? (
 
             <Button
-              className="w-full mt-4 bg-blue-600"
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
               onClick={handleAdd}
             >
               Add to Cart
@@ -187,7 +189,7 @@ export default function ProductCard({
 
           ) : (
 
-            <div className="flex items-center justify-between mt-4 border rounded-lg p-2">
+            <div className="flex items-center justify-between mt-4 border border-gray-200 dark:border-gray-700 rounded-lg p-2">
 
               <Button
                 onClick={() =>
@@ -202,7 +204,7 @@ export default function ProductCard({
                 -
               </Button>
 
-              <span className="font-bold">
+              <span className="font-bold text-black dark:text-white">
                 {cartItem.quantity}
               </span>
 
