@@ -46,8 +46,18 @@ export default function Products() {
     }
 
    
-    setProducts(res.data);
+    setProducts((prev) => {
 
+      const newProducts = res.data.filter(
+        (newItem) =>
+          !prev.some(
+            (oldItem) =>
+              oldItem._id === newItem._id
+          )
+      );
+
+      return [...prev, ...newProducts];
+    });
   } catch (err) {
     console.log(err);
   } finally {
@@ -56,7 +66,6 @@ export default function Products() {
 };
 
 useEffect(() => {
-  setProducts([]); // prevent old data overlap
   fetchProducts(page);
 }, [page]);
 

@@ -24,7 +24,15 @@ export default function Home() {
       return;
     }
 
-    setProducts(res.data);
+     setProducts((prev) => {
+
+      const newProducts = res.data.filter(
+        (newItem) =>
+          !prev.some((oldItem) => oldItem._id === newItem._id)
+      );
+
+      return [...prev, ...newProducts];
+    });
 
   } catch (err) {
     console.log(err);
@@ -33,7 +41,7 @@ export default function Home() {
   }
 };
 useEffect(() => {
-  setProducts([]);
+  
   fetchProducts(page);
 }, [page]);
 
