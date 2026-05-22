@@ -8,6 +8,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function ProductCard({
   deletingId ,
@@ -43,7 +44,8 @@ export default function ProductCard({
 
     if (!token) {
 
-      alert("Please login first");
+     // alert("Please login first");
+     toast.warning("Please login to continue");
 
       navigate("/login");
 
@@ -52,7 +54,8 @@ export default function ProductCard({
 
     if (user.role === "admin") {
 
-      alert("admin can't purcahase");
+      //alert("admin can't purcahase");
+      toast.error("Admins are not allowed to purchase products");
      
        return;
     }

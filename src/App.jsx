@@ -124,6 +124,7 @@
 import { ThemeProvider } from "next-themes";
 import AppRoutes from "./routes/AppRoutes";
 import ErrorBoundary from "./errorHandling/ErrorBoundary.jsx";
+import { Toaster } from "@/components/ui/sonner";
 
 
 export default function App() {
@@ -131,6 +132,7 @@ export default function App() {
     <ErrorBoundary>
   <ThemeProvider attribute="class" defaultTheme="light">
       <AppRoutes />
+      <Toaster richColors position="top-right" />
    </ThemeProvider>
    </ErrorBoundary>
   );

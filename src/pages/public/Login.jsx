@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../../redux/authSlice";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import { useEffect, useState } from "react";
 import {setCart} from "../../redux/cartSlice";
 import {getCart} from "../../api/cart";
+import { toast } from "sonner";
 
 
 const schema = z.object({
@@ -22,6 +23,7 @@ export default function Login() {
     const { token} = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -32,6 +34,8 @@ export default function Login() {
 
   const onSubmit = async (data) => {
   try {
+    setLoading(true);
+
     const res = await loginUser(data);
 
     console.log("LOGIN RESPONSE:", res.data);
@@ -49,17 +53,14 @@ export default function Login() {
 
     localStorage.setItem("token", token);
 
-    localStorage.setItem( "user",JSON.stringify(res.data.user));
+    localStorage.setItem(
+      "user",
+      JSON.stringify(res.data.user)
+    );
 
-    alert("Login Success");
+    //alert("Login Success");
+    toast.success("Login Success");
 
-    // Role redirect (important for assignment)
-    // if (user.role === "admin") {
-    //   window.location.href = "/admin";
-    // } else {
-    //   window.location.href = "/home";
-    // }
-        
     if (user.role === "admin") {
       navigate("/admin/products");
     } else {
@@ -68,7 +69,14 @@ export default function Login() {
 
   } catch (err) {
     console.log("LOGIN ERROR:", err);
-    alert(err.response?.data?.message || "Login failed");
+
+    // alert(
+    //   err.response?.data?.message ||
+    //   "Login failed"
+    // );
+    toast.error( err.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -105,8 +113,8 @@ useEffect(() => {
             </p>
           </div>
 
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-  Login
+          <Button disabled={loading}  className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+ {loading ? "Logging in..." : "Login"}
 </Button>
 
         </form>

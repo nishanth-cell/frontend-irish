@@ -5,6 +5,8 @@ import { registerUser } from "../../api/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -15,6 +17,7 @@ const schema = z.object({
 
 export default function Register() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,12 +28,17 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
+       setLoading(true);
       await registerUser(data);
-      alert("User Registered Successfully");
+      //alert("User Registered Successfully");
+      toast.success("User Registered Successfully");
     //   window.location.href = "/login";
       navigate("/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Register failed");
+     // alert(err.response?.data?.message || "Register failed");
+      toast.error(err.response?.data?.message || "Register failed");
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -56,7 +64,7 @@ export default function Register() {
          
 
           <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-  Register
+  {loading ? "Registering in..." : "Register"}
 </Button>
 
         </form>
