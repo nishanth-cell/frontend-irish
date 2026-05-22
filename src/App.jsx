@@ -123,11 +123,15 @@
 
 import { ThemeProvider } from "next-themes";
 import AppRoutes from "./routes/AppRoutes";
+import ErrorBoundary from "./errorHandling/ErrorBoundary.jsx";
+
 
 export default function App() {
   return (
+    <ErrorBoundary>
   <ThemeProvider attribute="class" defaultTheme="light">
       <AppRoutes />
    </ThemeProvider>
+   </ErrorBoundary>
   );
 }
